@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { DeseosService } from 'src/app/services/deseos.service';
+import { DeseosService } from '../../services/deseos.service';
 
 @Component({
   selector: 'app-tab1',
@@ -14,21 +14,18 @@ export class Tab1Page {
     private router: Router,
     private alertCtrl: AlertController) { }
 
-
-
   async agregarLista() {
-    // this.router.navigateByUrl('/tabs/tab1/agregar');
 
     const alert = await this.alertCtrl.create({
-      
+
       header: 'Nueva Lista',
       inputs: [
-        { 
-        name: 'titulo',
-        type:'text',
-        placeholder: 'Nombre de la lista',
-      }
-    ],
+        {
+          name: 'titulo',
+          type: 'text',
+          placeholder: 'Nombre de la lista',
+        }
+      ],
       buttons: [
         {
           text: 'Cancelar',
@@ -37,23 +34,23 @@ export class Tab1Page {
             console.log('Cancelar');
           }
         },
-          {
-            text: 'Crear',
-            handler: (data) => {
-              console.log(data);
-              if ( data.titulo.length === 0 ) {
-                return;
-              }
-              // Si no es 0 tengo que crear la lista.
-              this.deseosService.crearLista(data.titulo);
+        {
+          text: 'Crear',
+          handler: (data) => {
+            console.log(data);
+            if (data.titulo.length === 0) {
+              return;
             }
+            // Si no es 0 tengo que crear la lista.
+            const listaId = this.deseosService.crearLista(data.titulo);
+
+            this.router.navigateByUrl(`/tabs/tab1/agregar/${listaId}`);
           }
-        
+        }
+
       ]
     });
-     alert.present();
-
-
-
+    alert.present();
   }
+ 
 }
